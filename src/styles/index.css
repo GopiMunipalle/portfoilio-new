@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+/* Theme tokens. Components use utilities like bg-bg, text-fg, border-line. */
+:root,
+:root[data-theme="dark"] {
+  --bg: #0d1424;
+  --bg-alt: #111a2e;
+  --surface: #172036;
+  --border: #26324d;
+  --text: #e9eef9;
+  --muted: #9aa8c4;
+  --accent: #7f93ff;
+  --accent-ink: #0d1424;
+  --accent-soft: rgba(127, 147, 255, 0.14);
+  --code-bg: #0a101d;
+  --shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  color-scheme: dark;
+}
+:root[data-theme="light"] {
+  --bg: #f5f7fc;
+  --bg-alt: #eaeef8;
+  --surface: #ffffff;
+  --border: #d9dfee;
+  --text: #121a2e;
+  --muted: #55627f;
+  --accent: #3e4fd6;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(62, 79, 214, 0.1);
+  --code-bg: #121a2e;
+  --shadow: 0 18px 40px rgba(30, 45, 100, 0.12);
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-alt: var(--bg-alt);
+  --color-surface: var(--surface);
+  --color-line: var(--border);
+  --color-fg: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-code: var(--code-bg);
+  --shadow-card: var(--shadow);
+  --font-display: "Bricolage Grotesque", "Figtree", system-ui, sans-serif;
+  --font-sans: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 72px;
+  }
+  body {
+    @apply bg-bg font-sans text-[1.0625rem] leading-relaxed text-fg antialiased;
+    transition: background 0.25s, color 0.25s;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-display leading-[1.1] tracking-tight;
+  }
+  :focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+/* Hero code card: lines appear one after another on load. */
+.code-line {
+  display: block;
+  white-space: pre;
+  opacity: 0;
+  transform: translateX(-6px);
+  animation: line-in 0.45s ease forwards;
+  animation-delay: calc(0.25s + var(--i) * 0.16s);
+}
+@keyframes line-in {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .code-line {
+    opacity: 1;
+    transform: none;
+  }
+}
